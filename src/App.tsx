@@ -1,29 +1,41 @@
 import React, { useState } from 'react';
+import './App.css'; // Importamos estilos CSS
 
 // Definición de tipos
-type TimeBlock = 'Mañana (8am - 12pm)' | 'Tarde (12pm - 6pm)' | 'Noche (6pm - 12am)';
+type TimeBlock = 'Mañana' | 'Tarde' | 'Noche';
 
 interface SelectedBlocks {
   [date: string]: TimeBlock[];
 }
 
-// Función para generar las fechas a partir de 5 semanas
+// Función para generar las fechas a partir de 5 semanas (de lunes a domingo)
 const generateDates = (): Date[] => {
   const today = new Date();
   const futureDate = new Date(today);
   futureDate.setDate(today.getDate() + 5 * 7); // Sumamos 5 semanas
-  
+
   const dates: Date[] = [];
-  for (let i = 0; i < 7; i++) { // Puedes ajustar el número de días a mostrar
-    const date = new Date(futureDate);
-    date.setDate(futureDate.getDate() + i);
+  let startDate = futureDate;
+
+  // Ajustar el día de la semana para empezar el lunes
+  const dayOfWeek = startDate.getDay();
+  if (dayOfWeek !== 1) {
+    // Si no es lunes, ajustamos para que sea el lunes más cercano
+    startDate.setDate(startDate.getDate() + (1 - dayOfWeek));
+  }
+
+  // Generamos 35 días (5 semanas)
+  for (let i = 0; i < 35; i++) {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + i);
     dates.push(date);
   }
+  
   return dates;
 };
 
 // Bloques de tiempo
-const timeBlocks: TimeBlock[] = ['Mañana (8am - 12pm)', 'Tarde (12pm - 6pm)', 'Noche (6pm - 12am)'];
+const timeBlocks: TimeBlock[] = ['Mañana', 'Tarde', 'Noche'];
 
 const DateBlockSelector: React.FC = () => {
   const [selectedBlocks, setSelectedBlocks] = useState<SelectedBlocks>({});
@@ -48,24 +60,26 @@ const DateBlockSelector: React.FC = () => {
 
   return (
     <div>
-      <h2>Selecciona bloques de tiempo a partir de 5 semanas</h2>
-      {dates.map((date) => (
-        <div key={date.toDateString()} style={{ marginBottom: '20px' }}>
-          <h3>{date.toDateString()}</h3>
-          {timeBlocks.map((block) => (
-            <div key={block}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={(selectedBlocks[date.toDateString()] || []).includes(block)}
-                  onChange={() => handleBlockSelection(date, block)}
-                />
-                {block}
-              </label>
-            </div>
-          ))}
-        </div>
-      ))}
+      <h2>Selecciona bloques de tiempo</h2>
+      <div className="calendar-grid">
+        {dates.map((date) => (
+          <div key={date.toDateString()} className="calendar-day">
+            <h4>{date.toDateString()}</h4>
+            {timeBlocks.map((block) => (
+              <div key={block}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={(selectedBlocks[date.toDateString()] || []).includes(block)}
+                    onChange={() => handleBlockSelection(date, block)}
+                  />
+                  {block}
+                </label>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
       <pre>{JSON.stringify(selectedBlocks, null, 2)}</pre>
     </div>
   );
