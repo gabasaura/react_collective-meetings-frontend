@@ -2,40 +2,39 @@ import React, { useState } from 'react';
 import './App.css'; // Importamos estilos CSS
 
 // Definición de tipos
-type TimeBlock = 'Mañana' | 'Tarde' | 'Noche';
+type TimeBlock = 'Mañana (8am - 12pm)' | 'Tarde (12pm - 6pm)' | 'Noche (6pm - 12am)';
 
 interface SelectedBlocks {
   [date: string]: TimeBlock[];
 }
 
-// Función para generar las fechas a partir de 5 semanas (de lunes a domingo)
+// Función para generar las fechas desde hoy (incluyendo la semana actual)
 const generateDates = (): Date[] => {
   const today = new Date();
-  const futureDate = new Date(today);
-  futureDate.setDate(today.getDate() + 5 * 7); // Sumamos 5 semanas
-
   const dates: Date[] = [];
-  let startDate = futureDate;
 
-  // Ajustar el día de la semana para empezar el lunes
-  const dayOfWeek = startDate.getDay();
+  // Ajustamos el día de la semana para comenzar desde el lunes
+  const dayOfWeek = today.getDay();
+  const startDate = new Date(today);
+
+  // Si no es lunes, retrocedemos hasta el lunes más cercano
   if (dayOfWeek !== 1) {
-    // Si no es lunes, ajustamos para que sea el lunes más cercano
-    startDate.setDate(startDate.getDate() + (1 - dayOfWeek));
+    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Ajustar si es domingo o cualquier otro día
+    startDate.setDate(today.getDate() - daysToSubtract);
   }
 
-  // Generamos 35 días (5 semanas)
+  // Generamos las fechas de 5 semanas (35 días)
   for (let i = 0; i < 35; i++) {
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + i);
     dates.push(date);
   }
-  
+
   return dates;
 };
 
 // Bloques de tiempo
-const timeBlocks: TimeBlock[] = ['Mañana', 'Tarde', 'Noche'];
+const timeBlocks: TimeBlock[] = ['Mañana (8am - 12pm)', 'Tarde (12pm - 6pm)', 'Noche (6pm - 12am)'];
 
 const DateBlockSelector: React.FC = () => {
   const [selectedBlocks, setSelectedBlocks] = useState<SelectedBlocks>({});
