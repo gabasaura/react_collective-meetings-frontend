@@ -1,0 +1,23 @@
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columnas, una por cada día */
+    gap: 10px; /* Espacio entre celdas */
+  }
+  
+  .calendarDay {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #050409;
+    border-radius: 5px;
+  }
+  
+  .calendarDay h4 {
+    margin-top: 0;
+    font-size: 14px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
