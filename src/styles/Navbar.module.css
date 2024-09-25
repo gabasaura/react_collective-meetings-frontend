@@ -1,0 +1,45 @@
+/* Narbar */
+
+.navbar {
+    background-color: #333;
+    padding: 1rem;
+  }
+  
+  .navbarContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    color: #fff;
+  }
+  
+  .logo a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .navLinks {
+    list-style-type: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navLinks li {
+    font-size: 1.2rem;
+  }
+  
+  .navLinks a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .navLinks a:hover {
+    color: #ddd;
+    text-decoration: underline;
+  }
+  

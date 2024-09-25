@@ -7,6 +7,11 @@ const Meeting: React.FC = () => {
   const location = useLocation();
   const { name, email } = location.state as { name: string, email: string }; // Obteniendo datos de state
 
+  
+  if (!location.state) {
+    return <div>No hay estado disponible</div>
+  }
+
   return (
     <div>
       <h1>Bienvenido a la reunión</h1>
