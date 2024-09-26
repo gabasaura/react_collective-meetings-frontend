@@ -19,7 +19,7 @@ const Navbar = () => {
             <Link to="/new-meeting">New Meeting</Link>
           </li>
           <li>
-            <Link to="/about-wemeet">About WeMeet</Link>
+            <Link to="/about">About WeMeet</Link>
           </li>
         </ul>
       </div>

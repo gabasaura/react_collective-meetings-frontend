@@ -6,6 +6,7 @@ import Meeting from './pages/Meeting';
 import CalendarTester from './pages/CalendarTester';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import About from './pages/About';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/meeting" element={<Meeting />} />
         <Route path="/calendar" element={<CalendarTester />} />
+        <Route path="/about" element={<About />} />
 
         {/* Ruta para unirse a una reunión con un hash */}
         <Route path="/meeting/:hash" element={<JoinMeeting />} />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/Calendar.module.css'
 
 // Definición de tipos
-type TimeBlock = 'Mañana (8am - 12pm)' | 'Tarde (12pm - 6pm)' | 'Noche (6pm - 12am)';
+type TimeBlock = 'Mañana' | 'Tarde' | 'Noche';
 
 interface SelectedBlocks {
   [date: string]: TimeBlock[];
@@ -34,7 +34,7 @@ const generateDates = (): Date[] => {
 };
 
 // Bloques de tiempo
-const timeBlocks: TimeBlock[] = ['Mañana (8am - 12pm)', 'Tarde (12pm - 6pm)', 'Noche (6pm - 12am)'];
+const timeBlocks: TimeBlock[] = ['Mañana', 'Tarde', 'Noche'];
 
 const DateBlockSelector: React.FC = () => {
   const [selectedBlocks, setSelectedBlocks] = useState<SelectedBlocks>({});
@@ -55,6 +55,45 @@ const DateBlockSelector: React.FC = () => {
         return { ...prevState, [dateKey]: [...selected, block] };
       }
     });
+  };
+
+  // Función para enviar los bloques seleccionados al servidor
+  const submitBlocks = async () => {
+    const payload = [];
+
+    // Crear el payload para cada bloque de tiempo seleccionado
+    for (const [date, blocks] of Object.entries(selectedBlocks)) {
+      for (const block of blocks) {
+        const blockNumber = timeBlocks.indexOf(block) + 1;  // Convertir bloque a número (1, 2 o 3)
+
+        payload.push({
+          meeting_id: 1, // Suponiendo que tienes el ID de la reunión, reemplaza con tu lógica
+          user_id: 123, // Suponiendo que tienes el ID del usuario
+          date: new Date(date).toISOString().split('T')[0], // Convertir fecha a formato YYYY-MM-DD
+          block: blockNumber,
+          available: true // Suponiendo que siempre es true, cambia según sea necesario
+        });
+      }
+    }
+
+    try {
+      const response = await fetch('/timeslots', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Enviar los bloques seleccionados en formato JSON
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit timeslots');
+      }
+
+      const data = await response.json();
+      console.log('Success:', data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -79,6 +118,7 @@ const DateBlockSelector: React.FC = () => {
           </div>
         ))}
       </div>
+      <button onClick={submitBlocks}>Enviar</button>
       <pre>{JSON.stringify(selectedBlocks, null, 2)}</pre>
     </div>
   );
