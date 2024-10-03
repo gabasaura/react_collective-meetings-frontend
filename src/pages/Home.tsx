@@ -14,6 +14,8 @@ const Home: React.FC = () => {
     <div>
       <h1>Crear una nueva reunión</h1>
       <button onClick={handleCreateMeeting}>Crear Reunión</button>
+      <h1>Entra a tu reunión</h1>
+      <button onClick={handleCreateMeeting}>Ir a Reunión</button>
     </div>
   );
 };
