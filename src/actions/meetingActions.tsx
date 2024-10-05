@@ -21,6 +21,7 @@ export const enterMeeting = async (meetingIdOrHash: string): Promise<Meeting> =>
     }
 };
 
+
 // Obtener todas las reuniones
 export const getAllMeetings = async (): Promise<Meeting[]> => {
     try {
