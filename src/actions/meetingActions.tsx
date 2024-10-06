@@ -4,7 +4,7 @@ import { MeetingData, GuestData, ApiResponse, Meeting } from '../types/types';
 // Crear una nueva reunión
 export const createMeeting = async (meetingData: MeetingData): Promise<Meeting> => {
     try {
-        const response = await axios.post<ApiResponse<Meeting>>('/meetings', meetingData);
+        const response = await axios.post<ApiResponse<Meeting>>('http://127.0.0.1:5000/meetings', meetingData);
         return response.data.data; // Estructura asumida
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error creating meeting');
