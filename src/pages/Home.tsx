@@ -12,13 +12,20 @@ const Home: React.FC = () => {
   const handleCreateMeeting = async () => {
     try {
       const meetingData = {
-        title, // Input from form
-        creator_name: creatorName,
-        creator_email: creatorEmail,
-        description: meetDescription,
+        title: 'New Meeting',
+        creator_name: 'Your Name',
+        creator_email: 'youremail@example.com',
+        description: 'Description of the meeting',
       };
-      const newMeeting = await createMeeting(meetingData); // Call the function to create the meeting
-      navigate(`/meeting/${newMeeting.id}`); // Use the meeting ID from the response
+  
+      const newMeeting = await createMeeting(meetingData); // Llama a la función que crea la reunión
+  
+      if (!newMeeting || !newMeeting.id) {
+        throw new Error('Meeting creation failed: No ID returned');
+      }
+  
+      const id = newMeeting.id;  // Extrae el ID de la reunión creada
+      navigate(`/meeting/${id}`);  // Navega a la página de la reunión con el ID
     } catch (error) {
       console.error('Error creating meeting:', error);
     }
